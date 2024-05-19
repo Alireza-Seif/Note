@@ -4,7 +4,7 @@ import 'package:note_application/screens/home_screen.dart';
 
 void main() async {
   await Hive.initFlutter();
-  var box = await Hive.openBox('nammes');
+  var box = await Hive.openBox('names');
   runApp(const MainApp());
 }
 
