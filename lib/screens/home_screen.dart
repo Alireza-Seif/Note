@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:note_application/screens/car.dart';
+import 'package:note_application/screens/student.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,6 +15,8 @@ class _HomeScreenState extends State<HomeScreen> {
   var controller = TextEditingController();
 
   var box = Hive.box('names');
+  var carBox = Hive.box<Car>('carBox');
+  var studentBox = Hive.box<Student>('studentBox');
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +44,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {
-                box.put(1, 'alireza');
-              },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+              onPressed: () {
+                studentBox.put(
+                  1,
+                  Student(name: 'alireza', family: 'seiff', grade: 20, age: 23)
+                );
+              },
               child: const Text(
                 'create',
                 style: TextStyle(fontSize: 26, color: Colors.white),
@@ -51,8 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                var text = box.get(1);
-                print(text);
+                if (studentBox.get(1) == null) {
+                  return;
+                }
+                print(studentBox.get(1)!.name);
+                print(studentBox.get(1)!.family);
+                print(studentBox.get(1)!.grade);
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
               child: const Text(
@@ -62,7 +73,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                box.put(1, 'Seif');
+                studentBox.put(
+                  1,
+                  Student(name: 'asal', family: 'al aga', grade: 20, age: 23),
+                );
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
               child: const Text(
@@ -72,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                box.delete(1);
+                studentBox.delete(1);
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
               child: const Text(
