@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:note_application/data/task.dart';
 import 'package:note_application/screens/add_task_screen.dart';
 
 void main() async {
   await Hive.initFlutter();
+
+  await Hive.openBox<Task>('taskBox');
 
   runApp(const MainApp());
 }

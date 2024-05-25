@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:note_application/data/task.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
@@ -10,6 +12,11 @@ class AddTaskScreen extends StatefulWidget {
 class _AddTaskScreenState extends State<AddTaskScreen> {
   FocusNode negahban1 = FocusNode();
   FocusNode negahban2 = FocusNode();
+
+  final TextEditingController controllerTaskTitle = TextEditingController();
+  final TextEditingController controllerTaskSubTitle = TextEditingController();
+
+  final box = Hive.box<Task>('taskBox');
 
   @override
   void initState() {
@@ -36,6 +43,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 child: Directionality(
                   textDirection: TextDirection.rtl,
                   child: TextField(
+                    controller: controllerTaskTitle,
                     focusNode: negahban1,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(
@@ -69,6 +77,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 child: Directionality(
                   textDirection: TextDirection.rtl,
                   child: TextField(
+                    controller: controllerTaskSubTitle,
                     maxLines: 2,
                     focusNode: negahban2,
                     decoration: InputDecoration(
@@ -99,7 +108,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               ),
               Spacer(),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  String taskTitle = controllerTaskTitle.text;
+                  String taskSubTitle = controllerTaskSubTitle.text;
+                  addTask(taskTitle, taskSubTitle);
+                },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff18DAA3),
                     foregroundColor: Colors.white,
@@ -117,5 +130,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         ),
       ),
     );
+  }
+
+  addTask(String taskTitle, String taskSubTitle) {
+    //add task
+
+    var task = Task(title: taskTitle, subTitle: taskSubTitle);
+    box.add(task);
+    print(box.get(1)!.title);
   }
 }
