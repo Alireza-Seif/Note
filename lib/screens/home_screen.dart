@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:msh_checkbox/msh_checkbox.dart';
 import 'package:note_application/data/task.dart';
 import 'package:note_application/widgets/task_widget.dart';
 
