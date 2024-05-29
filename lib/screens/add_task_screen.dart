@@ -124,7 +124,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -137,6 +137,5 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
     var task = Task(title: taskTitle, subTitle: taskSubTitle);
     box.add(task);
-    print(box.get(1)!.title);
   }
 }
