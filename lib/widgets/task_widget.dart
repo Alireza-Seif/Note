@@ -11,7 +11,14 @@ class TaskWidget extends StatefulWidget {
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
-  bool isDone = false;
+  bool isBoxChecked = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isBoxChecked = widget.task.isDone;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +29,9 @@ class _TaskWidgetState extends State<TaskWidget> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          isDone = !isDone;  
+          isBoxChecked = !isBoxChecked;
+          widget.task.isDone = isBoxChecked;
+          widget.task.save();
         });
       },
       child: Container(
@@ -52,21 +61,20 @@ class _TaskWidgetState extends State<TaskWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  MSHCheckbox(
-                    value: isDone,
-                    size: 32,
-                    checkedColor: const Color(0xff18DAA3),
-                    style: MSHCheckboxStyle.fillScaleCheck,
-                    onChanged: (selected) {
-                      setState(() {
-                        isDone = selected;
-                      });
-                    },
-                  ),
+                  Checkbox(
+                      value: isBoxChecked,
+                      onChanged: (isChecked) {
+                        setState(() {
+                          isBoxChecked = isChecked!;
+                        });
+                      }),
                   Text(widget.task.title)
                 ],
               ),
-              Text(widget.task.subTitle),
+              Text(
+                widget.task.subTitle,
+                overflow: TextOverflow.ellipsis,
+              ),
               const Spacer(),
               getTimeAndEditBadgs()
             ],
