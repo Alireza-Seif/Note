@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_application/data/task.dart';
@@ -18,6 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var taskBox = Hive.box<Task>('taskBox');
 
+  bool isFabVisible = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,25 +29,41 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ValueListenableBuilder(
         valueListenable: taskBox.listenable(),
         builder: (context, value, child) {
-          return ListView.builder(
-            itemCount: taskBox.values.length,
-            itemBuilder: (BuildContext context, int index) {
-              var task = taskBox.values.toList()[index];
-              return TaskWidget(task: task);
+          return NotificationListener<UserScrollNotification>(
+            onNotification: (notification) {
+              setState(() {
+                if (notification.direction == ScrollDirection.forward) {
+                  isFabVisible = true;
+                }
+                if (notification.direction == ScrollDirection.reverse) {
+                  isFabVisible = false;
+                }
+              });
+              return true;
             },
-          );
-        },
-      )),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xff18DAA3),
-        child: Image.asset('assets/images/icon_add.png'),
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const AddTaskScreen(),
+            child: ListView.builder(
+              itemCount: taskBox.values.length,
+              itemBuilder: (BuildContext context, int index) {
+                var task = taskBox.values.toList()[index];
+                return TaskWidget(task: task);
+              },
             ),
           );
         },
+      )),
+      floatingActionButton: Visibility(
+        visible: isFabVisible,
+        child: FloatingActionButton(
+          backgroundColor: const Color(0xff18DAA3),
+          child: Image.asset('assets/images/icon_add.png'),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const AddTaskScreen(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
