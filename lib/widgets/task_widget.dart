@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_application/data/task.dart';
+import 'package:note_application/screens/edit_task_screen.dart';
 
 class TaskWidget extends StatefulWidget {
   TaskWidget({super.key, required this.task});
@@ -113,25 +114,36 @@ class _TaskWidgetState extends State<TaskWidget> {
           ),
         ),
         const SizedBox(width: 15),
-        Container(
-          width: 95,
-          height: 28,
-          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-          decoration: BoxDecoration(
-            color: const Color(0xffE2F6F1),
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: Row(
-            children: [
-              const Text(
-                'ویرایش',
-                style: TextStyle(
-                  color: Color(0xff18DAA3),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => EditTaskScreen(
+                  task: widget.task,
                 ),
               ),
-              const SizedBox(width: 10),
-              Image.asset('assets/images/icon_edit.png'),
-            ],
+            );
+          },
+          child: Container(
+            width: 95,
+            height: 28,
+            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+            decoration: BoxDecoration(
+              color: const Color(0xffE2F6F1),
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: Row(
+              children: [
+                const Text(
+                  'ویرایش',
+                  style: TextStyle(
+                    color: Color(0xff18DAA3),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Image.asset('assets/images/icon_edit.png'),
+              ],
+            ),
           ),
         ),
       ],

@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_application/data/task.dart';
 
-class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({super.key});
+class EditTaskScreen extends StatefulWidget {
+  EditTaskScreen({super.key, required this.task});
+
+  Task task;
 
   @override
-  State<AddTaskScreen> createState() => _AddTaskScreenState();
+  State<EditTaskScreen> createState() => _EditTaskScreenState();
 }
 
-class _AddTaskScreenState extends State<AddTaskScreen> {
+class _EditTaskScreenState extends State<EditTaskScreen> {
   FocusNode negahban1 = FocusNode();
   FocusNode negahban2 = FocusNode();
 
-  final TextEditingController controllerTaskTitle = TextEditingController();
-  final TextEditingController controllerTaskSubTitle = TextEditingController();
+  TextEditingController? controllerTaskTitle;
+  TextEditingController? controllerTaskSubTitle;
 
   final box = Hive.box<Task>('taskBox');
 
@@ -22,6 +24,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    controllerTaskTitle = TextEditingController(text: widget.task.title);
+    controllerTaskSubTitle = TextEditingController(text: widget.task.subTitle);
+
     negahban1.addListener(() {
       setState(() {});
     });
@@ -109,9 +115,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               const Spacer(),
               ElevatedButton(
                 onPressed: () {
-                  String taskTitle = controllerTaskTitle.text;
-                  String taskSubTitle = controllerTaskSubTitle.text;
-                  addTask(taskTitle, taskSubTitle);
+                  String taskTitle = controllerTaskTitle!.text;
+                  String taskSubTitle = controllerTaskSubTitle!.text;
+                  editTask(taskTitle, taskSubTitle);
                   Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(
@@ -119,7 +125,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     foregroundColor: Colors.white,
                     minimumSize: const Size(200, 48)),
                 child: const Text(
-                  'اضافه کردن تسک',
+                  'ویرایش کردن تسک',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -134,10 +140,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
   }
 
-  addTask(String taskTitle, String taskSubTitle) {
-    //add task
-
-    var task = Task(title: taskTitle, subTitle: taskSubTitle);
-    box.add(task);
+  editTask(String taskTitle, String taskSubTitle) {
+    widget.task.title = taskTitle;
+    widget.task.subTitle = taskSubTitle;
+    widget.task.save();
   }
 }
