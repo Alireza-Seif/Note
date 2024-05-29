@@ -106,12 +106,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   ),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               ElevatedButton(
                 onPressed: () {
                   String taskTitle = controllerTaskTitle.text;
                   String taskSubTitle = controllerTaskSubTitle.text;
                   addTask(taskTitle, taskSubTitle);
+                  Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff18DAA3),
