@@ -102,11 +102,12 @@ class _TaskWidgetState extends State<TaskWidget> {
           ),
           child: Row(
             children: [
-              const Text(
-                '10:30',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+              Text(
+                '${widget.task.time.hour}:${getMinUndterTen(widget.task.time)}',
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14),
               ),
               const SizedBox(width: 10),
               Image.asset('assets/images/icon_time.png'),
@@ -148,5 +149,13 @@ class _TaskWidgetState extends State<TaskWidget> {
         ),
       ],
     );
+  }
+
+  String getMinUndterTen(DateTime time) {
+      if (time.minute < 10) {
+      return '0${time.minute}';
+    } else {
+      return time.minute.toString();
+    }
   }
 }
