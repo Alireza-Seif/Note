@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_application/data/task.dart';
+import 'package:note_application/widgets/task_type.dart';
+import 'package:note_application/widgets/utility.dart';
 import 'package:time_pickerr/time_pickerr.dart';
 
 class AddTaskScreen extends StatefulWidget {
@@ -133,6 +136,18 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 },
                 onNegativePressed: (context) {},
               ),
+              Container(
+                height: 200,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: getTaskTypeList().length,
+                  itemBuilder: (context, index) {
+                    return TaskTypeItemList(
+                      taskType: getTaskTypeList()[index],
+                    );
+                  },
+                ),
+              ),
               const Spacer(),
               ElevatedButton(
                 onPressed: () {
@@ -153,7 +168,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 50),
             ],
           ),
         ),
@@ -165,5 +179,25 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     //add task
     var task = Task(title: taskTitle, subTitle: taskSubTitle, time: _time!);
     box.add(task);
+  }
+}
+
+class TaskTypeItemList extends StatelessWidget {
+  TaskTypeItemList({
+    required this.taskType,
+    super.key,
+  });
+
+  TaskType taskType;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(8),
+      width: 140,
+      child: Column(
+        children: [Image.asset(taskType.image), Text(taskType.title)],
+      ),
+    );
   }
 }
