@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:note_application/widgets/task_type.dart';
+import 'package:note_application/data/task_type.dart';
 
 class TaskTypeItemList extends StatelessWidget {
   TaskTypeItemList({

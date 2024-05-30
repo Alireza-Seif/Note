@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_application/data/task.dart';
 import 'package:note_application/screens/add_task_screen.dart';
-import 'package:note_application/widgets/task_type.dart';
+import 'package:note_application/data/task_type.dart';
 import 'package:note_application/widgets/task_type_item.dart';
-import 'package:note_application/widgets/utility.dart';
+import 'package:note_application/utility/utility.dart';
 import 'package:time_pickerr/time_pickerr.dart';
 
 class EditTaskScreen extends StatefulWidget {

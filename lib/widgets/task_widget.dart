@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:note_application/data/task.dart';
 import 'package:note_application/screens/edit_task_screen.dart';
 
@@ -61,13 +62,23 @@ class _TaskWidgetState extends State<TaskWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Checkbox(
-                      value: isBoxChecked,
-                      onChanged: (isChecked) {
-                        setState(() {
-                          isBoxChecked = isChecked!;
-                        });
-                      }),
+                  Transform.scale(
+                    scale: 1.5,
+                    child: Checkbox(
+                        value: isBoxChecked,
+                        checkColor: Colors.white,
+                        activeColor: const Color(0xff18DAA3),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(5),
+                          ),
+                        ),
+                        onChanged: (isChecked) {
+                          setState(() {
+                            isBoxChecked = isChecked!;
+                          });
+                        }),
+                  ),
                   Text(widget.task.title)
                 ],
               ),
@@ -81,7 +92,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           ),
         ),
         const SizedBox(width: 20),
-        Image.asset('assets/images/workout.png'),
+        Image.asset(widget.task.taskType.image),
       ],
     );
   }
@@ -128,12 +139,13 @@ class _TaskWidgetState extends State<TaskWidget> {
           child: Container(
             width: 95,
             height: 28,
-            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
               color: const Color(0xffE2F6F1),
               borderRadius: BorderRadius.circular(18),
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Text(
                   'ویرایش',
@@ -152,7 +164,7 @@ class _TaskWidgetState extends State<TaskWidget> {
   }
 
   String getMinUndterTen(DateTime time) {
-      if (time.minute < 10) {
+    if (time.minute < 10) {
       return '0${time.minute}';
     } else {
       return time.minute.toString();
