@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_application/data/task.dart';
+import 'package:note_application/data/type_enum.dart';
 import 'package:note_application/screens/home_screen.dart';
+import 'package:note_application/widgets/task_type.dart';
 
 void main() async {
   await Hive.initFlutter();
 
   Hive.registerAdapter(TaskAdapter());
+  Hive.registerAdapter(TaskTypeAdapter());
+  Hive.registerAdapter(TaskTypeEnumAdapter());
   await Hive.openBox<Task>('taskBox');
 
   runApp(const MainApp());
