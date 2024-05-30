@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_application/data/task.dart';
 import 'package:note_application/widgets/task_type.dart';
@@ -23,6 +22,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   final box = Hive.box<Task>('taskBox');
 
   DateTime? _time;
+
+  int _selectedTaskTypeItem = 0;
 
   @override
   void initState() {
@@ -142,8 +143,17 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   scrollDirection: Axis.horizontal,
                   itemCount: getTaskTypeList().length,
                   itemBuilder: (context, index) {
-                    return TaskTypeItemList(
-                      taskType: getTaskTypeList()[index],
+                    return InkWell(
+                      onTap: () {
+                        setState(() {
+                          _selectedTaskTypeItem = index;
+                        });
+                      },
+                      child: TaskTypeItemList(
+                        taskType: getTaskTypeList()[index],
+                        index: index,
+                        selectedItemmList: _selectedTaskTypeItem,
+                      ),
                     );
                   },
                 ),
@@ -185,14 +195,29 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 class TaskTypeItemList extends StatelessWidget {
   TaskTypeItemList({
     required this.taskType,
+    required this.index,
+    required this.selectedItemmList,
     super.key,
   });
 
   TaskType taskType;
 
+  int index, selectedItemmList;
+
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: (selectedItemmList == index)
+              ? const Color(0xff18DAA3)
+              : Colors.grey,
+          width: (selectedItemmList == index) ? 3 : 1,
+        ),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(10),
+        ),
+      ),
       margin: const EdgeInsets.all(8),
       width: 140,
       child: Column(
