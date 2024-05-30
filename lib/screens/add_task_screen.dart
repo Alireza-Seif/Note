@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_application/data/task.dart';
 import 'package:note_application/widgets/task_type.dart';
+import 'package:note_application/widgets/task_type_item.dart';
 import 'package:note_application/widgets/utility.dart';
 import 'package:time_pickerr/time_pickerr.dart';
 
@@ -137,7 +138,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 },
                 onNegativePressed: (context) {},
               ),
-              Container(
+              SizedBox(
                 height: 200,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -194,40 +195,5 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       taskType: getTaskTypeList()[_selectedTaskTypeItem],
     );
     box.add(task);
-  }
-}
-
-class TaskTypeItemList extends StatelessWidget {
-  TaskTypeItemList({
-    required this.taskType,
-    required this.index,
-    required this.selectedItemmList,
-    super.key,
-  });
-
-  TaskType taskType;
-
-  int index, selectedItemmList;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: (selectedItemmList == index)
-              ? const Color(0xff18DAA3)
-              : Colors.grey,
-          width: (selectedItemmList == index) ? 3 : 1,
-        ),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(10),
-        ),
-      ),
-      margin: const EdgeInsets.all(8),
-      width: 140,
-      child: Column(
-        children: [Image.asset(taskType.image), Text(taskType.title)],
-      ),
-    );
   }
 }

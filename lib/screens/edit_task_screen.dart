@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_application/data/task.dart';
+import 'package:note_application/screens/add_task_screen.dart';
+import 'package:note_application/widgets/task_type.dart';
+import 'package:note_application/widgets/task_type_item.dart';
+import 'package:note_application/widgets/utility.dart';
 import 'package:time_pickerr/time_pickerr.dart';
 
 class EditTaskScreen extends StatefulWidget {
@@ -21,6 +25,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
 
   final box = Hive.box<Task>('taskBox');
   DateTime? _time;
+  int _selectedTaskTypeItem = 0;
 
   @override
   void initState() {
@@ -36,6 +41,11 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     negahban2.addListener(() {
       setState(() {});
     });
+
+    var index = getTaskTypeList().indexWhere(
+        (element) => element.taskTypeEnum == widget.task.taskType.taskTypeEnum);
+
+    _selectedTaskTypeItem = index;
   }
 
   @override
@@ -138,6 +148,27 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                 },
                 onNegativePressed: (context) {},
               ),
+              SizedBox(
+                height: 200,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: getTaskTypeList().length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        setState(() {
+                          _selectedTaskTypeItem = index;
+                        });
+                      },
+                      child: TaskTypeItemList(
+                        taskType: getTaskTypeList()[index],
+                        index: index,
+                        selectedItemmList: _selectedTaskTypeItem,
+                      ),
+                    );
+                  },
+                ),
+              ),
               const Spacer(),
               ElevatedButton(
                 onPressed: () {
@@ -158,7 +189,6 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 50),
             ],
           ),
         ),
@@ -170,7 +200,9 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     widget.task.title = taskTitle;
     widget.task.subTitle = taskSubTitle;
     widget.task.time = _time!;
+    widget.task.taskType = getTaskTypeList()[_selectedTaskTypeItem];
     widget.task.save();
   }
-
 }
+
+
